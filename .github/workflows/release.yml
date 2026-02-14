@@ -58,20 +58,21 @@ jobs:
           tagName: ${{ github.event.inputs.tag || github.ref_name }}
           releaseName: 'Trauso ${{ github.event.inputs.tag || github.ref_name }}'
           releaseBody: |
-            ## 🎉 What's New in ${{ github.event.inputs.tag || github.ref_name }}
+            ## 🎉 What's New
             
             ### Installation
-            - **Windows**: Download `trauso_${{ github.event.inputs.tag || github.ref_name }}_x64-setup.exe` for installer or `trauso_${{ github.event.inputs.tag || github.ref_name }}_x64.msi` for MSI
-            - **macOS**: Download `Trauso_${{ github.event.inputs.tag || github.ref_name }}_universal.dmg`
-            - **Linux**: Download `trauso_${{ github.event.inputs.tag || github.ref_name }}_amd64.deb` or `trauso_${{ github.event.inputs.tag || github.ref_name }}_amd64.AppImage`
+            Download the appropriate installer for your platform from the assets below:
+            - **Windows**: Look for `.exe` (NSIS installer) or `.msi` files
+            - **macOS**: Look for `.dmg` files (Universal binary works on both Intel and Apple Silicon)
+            - **Linux**: Look for `.deb` (Debian/Ubuntu) or `.AppImage` (portable) files
             
             ### Notes
             - This release includes all the latest features and bug fixes
             - Auto-update is enabled for existing installations
-            - See full changelog below for details
+            - Check the repository commits for detailed changes
             
             ---
-            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.event.inputs.tag || github.ref_name }}
+            **Full Changelog**: https://github.com/${{ github.repository }}/commits/${{ github.event.inputs.tag || github.ref_name }}
           releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
