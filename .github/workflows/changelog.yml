@@ -1,0 +1,40 @@
+name: Generate Changelog
+on:
+  workflow_dispatch:
+    inputs:
+      from_tag:
+        description: 'Previous tag (e.g., v1.0.1)'
+        required: true
+        type: string
+      to_tag:
+        description: 'Current tag (e.g., v1.0.2)'
+        required: true
+        type: string
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Generate changelog
+        id: changelog
+        run: |
+          echo "## Changelog from ${{ github.event.inputs.from_tag }} to ${{ github.event.inputs.to_tag }}" > CHANGELOG.txt
+          echo "" >> CHANGELOG.txt
+          
+          git log ${{ github.event.inputs.from_tag }}..${{ github.event.inputs.to_tag }} \
+            --pretty=format:"- %s (%h)" \
+            --no-merges >> CHANGELOG.txt
+          
+          cat CHANGELOG.txt
+
+      - name: Upload changelog
+        uses: actions/upload-artifact@v4
+        with:
+          name: changelog
+          path: CHANGELOG.txt

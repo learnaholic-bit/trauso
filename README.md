@@ -28,9 +28,17 @@ A modern, fast, and robust TeraBox file downloader built with **Tauri v2** (Rust
 
 ## 📥 Installation
 
-1. Go to [Releases Page](https://github.com/basstimam/trauso/releases/latest).
-2. Download the latest `trauso_setup.exe` (Installer) or `trauso.exe` (Portable).
+### Download Pre-built Binaries
+
+1. Go to [Releases Page](https://github.com/learnaholic-bit/trauso/releases/latest).
+2. Download the appropriate installer for your platform:
+   - **Windows**: `trauso_<version>_x64-setup.exe` (NSIS installer) or `trauso_<version>_x64.msi`
+   - **macOS**: `Trauso_<version>_universal.dmg` (works on both Intel and Apple Silicon)
+   - **Linux**: `trauso_<version>_amd64.deb` or `trauso_<version>_amd64.AppImage`
 3. **Run and Enjoy!** No Python or external dependencies required.
+
+### Auto-Updates
+The application includes built-in auto-update functionality. You'll be notified when a new version is available!
 
 ## 📚 Usage guide
 
@@ -83,6 +91,12 @@ npm run tauri build
 ## 📄 License
 
 This project is licensed under the [MIT License](LICENSE).
+
+## 🚀 Contributing & Releases
+
+Want to contribute or create a release? Check out:
+- [Development Guide](AGENTS.md) - Build commands, code style, and architecture
+- [Release Guide](RELEASE.md) - How to create and publish releases
 
 ## ☕ Support
 

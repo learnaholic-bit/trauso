@@ -1,6 +1,6 @@
 [package]
 name = "trauso"
-version = "0.1.0"
+version = "1.0.2"
 description = "TeraBox Downloader - Fast and easy file downloader"
 authors = ["basstimam"]
 edition = "2021"
