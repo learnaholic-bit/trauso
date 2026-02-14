@@ -10,11 +10,28 @@ This repository uses GitHub Actions to automatically build and publish releases 
 
 Before creating a release, ensure:
 1. All changes are committed and pushed to the main branch
-2. The version number is updated in:
-   - `package.json` (version field)
-   - `src-tauri/tauri.conf.json` (version field)
-   - `src-tauri/Cargo.toml` (version field)
+2. The version number is updated in all files (see "Updating Version" below)
 3. All tests pass locally
+
+### Updating Version
+
+You can update the version number using the provided scripts:
+
+**On Linux/macOS:**
+```bash
+./scripts/bump-version.sh 1.0.3
+```
+
+**On Windows:**
+```powershell
+.\scripts\bump-version.ps1 1.0.3
+```
+
+These scripts will automatically update:
+- `package.json`
+- `src-tauri/tauri.conf.json`
+- `src-tauri/Cargo.toml`
+- `src-tauri/Cargo.lock`
 
 ### Creating a Release
 
