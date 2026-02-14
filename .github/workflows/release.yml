@@ -3,6 +3,12 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Tag to release (e.g., v1.0.2)'
+        required: true
+        type: string
 
 jobs:
   publish-tauri:
@@ -14,6 +20,10 @@ jobs:
         include:
           - platform: 'windows-latest'
             args: ''
+          - platform: 'ubuntu-22.04'
+            args: ''
+          - platform: 'macos-latest'
+            args: '--target universal-apple-darwin'
 
     runs-on: ${{ matrix.platform }}
     steps:
@@ -26,6 +36,14 @@ jobs:
 
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: install dependencies (ubuntu only)
+        if: matrix.platform == 'ubuntu-22.04'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y libwebkit2gtk-4.1-dev libappindicator3-dev librsvg2-dev patchelf
 
       - name: install frontend dependencies
         run: npm install
@@ -37,9 +55,23 @@ jobs:
           TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
         with:
-          tagName: ${{ github.ref_name }}
-          releaseName: 'Trauso ${{ github.ref_name }}'
-          releaseBody: 'See the assets to download this version and install.'
-          releaseDraft: true
+          tagName: ${{ github.event.inputs.tag || github.ref_name }}
+          releaseName: 'Trauso ${{ github.event.inputs.tag || github.ref_name }}'
+          releaseBody: |
+            ## 🎉 What's New in ${{ github.event.inputs.tag || github.ref_name }}
+            
+            ### Installation
+            - **Windows**: Download `trauso_${{ github.event.inputs.tag || github.ref_name }}_x64-setup.exe` for installer or `trauso_${{ github.event.inputs.tag || github.ref_name }}_x64.msi` for MSI
+            - **macOS**: Download `Trauso_${{ github.event.inputs.tag || github.ref_name }}_universal.dmg`
+            - **Linux**: Download `trauso_${{ github.event.inputs.tag || github.ref_name }}_amd64.deb` or `trauso_${{ github.event.inputs.tag || github.ref_name }}_amd64.AppImage`
+            
+            ### Notes
+            - This release includes all the latest features and bug fixes
+            - Auto-update is enabled for existing installations
+            - See full changelog below for details
+            
+            ---
+            **Full Changelog**: https://github.com/${{ github.repository }}/compare/${{ github.event.inputs.tag || github.ref_name }}
+          releaseDraft: false
           prerelease: false
           args: ${{ matrix.args }}
